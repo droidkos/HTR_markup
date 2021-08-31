@@ -104,3 +104,18 @@ def write_markup(labels_path, image_folder, labels_filename, page):
         writer = csv.writer(file)
         for pair in zip(labels, images):
             writer.writerow(pair)
+
+
+def increase_contrast(img):
+    """
+    Увеличивает контрастность и толщину линий для улучшения качества распознавания
+    :param img: исходное изображение
+    :return: обработанное изображение
+    """
+    pxmin = np.min(img)
+    pxmax = np.max(img)
+    imgContrast = (img - pxmin) / (pxmax - pxmin) * 255
+
+    kernel = np.ones((3, 3), np.uint8)
+    imgMorph = cv2.erode(imgContrast, kernel, iterations=1)
+    return imgMorph

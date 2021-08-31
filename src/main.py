@@ -38,8 +38,9 @@ if __name__ == '__main__':
     cropped_images = ts.get_images(img_vh, bitnot, img_bin, w_min=10, h_min=25, h_max=5, debug=False)
 
     for num, cropped_img in enumerate(cropped_images):
+        enhanced_img = markup.increase_contrast(cropped_img)
         filename = DST_IMG_FOLDER + '/' + str(num).zfill(3) + '.jpg'  # zfill делает названия 001, 002 и т.п.
-        did_write = cv2.imwrite(filename, cropped_img)
+        did_write = cv2.imwrite(filename, enhanced_img)
         # если не удалось записать файл, самостоятельно вызываем исключение
         if not did_write:
             raise Exception("Не удалось сохранить готовый файл")
