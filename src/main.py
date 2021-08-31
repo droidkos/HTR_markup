@@ -10,7 +10,8 @@ if __name__ == '__main__':
     # интерпретатор должен быть запущен в корневой папке проекта!
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("labels", help='Название файла с текстом. Не указывать расширение!')
+    parser.add_argument("labels", choices=['blvrd', 'discipl', 'econ', 'journ', 'koms', 'mathstat'],
+                        help='Название файла с текстом. Не указывать расширение!')
     parser.add_argument("images", help='Файл с отсканированным изображением')
     parser.add_argument("page", type=int, help='Номер страницы')
     args = parser.parse_args()

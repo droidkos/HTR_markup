@@ -1,6 +1,7 @@
 import re
 import csv
 import os
+import cv2
 import numpy as np
 
 
@@ -56,7 +57,7 @@ def read_source(path, page):
     :param path: путь к файлу
     :return: список из словосочетаний
     """
-    nrows = 20
+    nrows = 21
     offset = (page - 1) * nrows  # на каждой странице у нас по 20 словосочетаний
     n = 0
     with open(path, newline='') as file:
