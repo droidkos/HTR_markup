@@ -91,13 +91,14 @@ def write_markup(labels_path, image_folder, labels_filename, page, gender):
     if not os.path.exists(markup_file_path):
         with open(markup_file_path, "w", newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(('label', 'image', gender))
+            writer.writerow(('label', 'image', 'gender'))
 
     # после этого добавляем в файл обработанные строки
     with open(markup_file_path, "a", newline='') as file:
         writer = csv.writer(file)
         for pair in zip(labels, images):
-            writer.writerow(pair)
+            row = (pair[0], pair[1], gender)
+            writer.writerow(row)
 
 
 def increase_contrast(img):
