@@ -14,6 +14,7 @@ if __name__ == '__main__':
                         help='Название файла с текстом. Не указывать расширение!')
     parser.add_argument("images", help='Файл с отсканированным изображением')
     parser.add_argument("page", type=int, help='Номер страницы')
+    parser.add_argument("gender", type=int, choices=[0,1], help="Пол: 1 - М, 0 - Ж")
     args = parser.parse_args()
 
     # аргументами должны быть только имена файлов, без путей
@@ -53,5 +54,5 @@ if __name__ == '__main__':
     ts.control(answers, cropped_images)
 
     # формирование и запись csv разметки (формат "текст" - "путь к картинке")
-    markup.write_markup(LABELS_FILE_PATH, DST_IMG_FOLDER, args.labels, args.page)
+    markup.write_markup(LABELS_FILE_PATH, DST_IMG_FOLDER, args.labels, args.page, args.gender)
     print("Файл разметки сформирован")

@@ -64,10 +64,11 @@ def read_source(path, page):
     return answers
 
 
-def write_markup(labels_path, image_folder, labels_filename, page):
+def write_markup(labels_path, image_folder, labels_filename, page, gender):
     """
     Принимает csv файл с labels и папку
     Формирование файла разметки для обучения модели
+    :param gender: пол заполнившего лист
     :param labels_path: путь к файлу с текстами строк
     :param page: номер страницы (определяет смещение в csv-файле)
     :param labels_filename: называние файла с текстами строк
@@ -90,7 +91,7 @@ def write_markup(labels_path, image_folder, labels_filename, page):
     if not os.path.exists(markup_file_path):
         with open(markup_file_path, "w", newline='') as file:
             writer = csv.writer(file)
-            writer.writerow(('label', 'image'))
+            writer.writerow(('label', 'image', gender))
 
     # после этого добавляем в файл обработанные строки
     with open(markup_file_path, "a", newline='') as file:

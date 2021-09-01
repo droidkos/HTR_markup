@@ -1,6 +1,4 @@
-/data/images/**.*
-/data/labels/**.*
-/data/txt/*
-/markup/**.*
-/sliced/**./*
+/data/images/*
+/markup/*
+/sliced/*
 control.png
