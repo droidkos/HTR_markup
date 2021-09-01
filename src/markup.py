@@ -1,26 +1,20 @@
 import re
 import csv
 import os
+import argparse
 import cv2
 import numpy as np
 
 
-def write_source(input_path, output_path, line_cnt, words_per_line=3, replace=False):
+def write_source(input_path, line_cnt, words_per_line=3):
     """
     Формирует csv файл из простого текстового файла (файл-источник)
     Данный файл необходим для формирования labels разметки
     :param input_path: путь к txt файлу источника
-    :param output_path: путь к csv файлу приемника
     :param line_cnt: ограничение на число выходных строк
     :param words_per_line: количество слов в строке
-    :param replace: заменять ли файл-приемник, если он существует
     :return: None
     """
-    if replace and os.path.isfile(output_path):
-        os.remove(output_path)
-    elif os.path.isfile(output_path):
-        raise Exception("Алярм! Выходной файл уже существует!")
-
     with open(input_path, encoding='utf-8') as file:
         text = file.read().lower()
         text = text.replace('ниу', ' ')
@@ -29,7 +23,6 @@ def write_source(input_path, output_path, line_cnt, words_per_line=3, replace=Fa
 
     words = text.split()
     words_total = len(words) - 3
-    pairs = []
 
     while line_cnt > 0:
         rand = np.random.randint(0, words_total)
@@ -40,13 +33,12 @@ def write_source(input_path, output_path, line_cnt, words_per_line=3, replace=Fa
         elif len(words[rand]) < 3 and len(words[rand + 2]) < 3:
             continue
 
-        pairs.append(' '.join(words[rand: rand + words_per_line]))
-        line_cnt -= 1
+        concat = ' '.join(words[rand: rand + words_per_line])
+        if len(concat) > 20:
+            continue
 
-    with open(output_path, "w", newline='') as f:
-        writer = csv.writer(f)
-        for pair in pairs:
-            writer.writerow([pair])
+        line_cnt -= 1
+        yield concat
 
 
 def read_source(path, page):
@@ -57,7 +49,7 @@ def read_source(path, page):
     :param path: путь к файлу
     :return: список из словосочетаний
     """
-    nrows = 21
+    nrows = 20
     offset = (page - 1) * nrows  # на каждой странице у нас по 20 словосочетаний
     n = 0
     with open(path, newline='') as file:
@@ -120,3 +112,28 @@ def increase_contrast(img):
     kernel = np.ones((3, 3), np.uint8)
     imgMorph = cv2.erode(imgContrast, kernel, iterations=1)
     return imgMorph
+
+
+if __name__ == '__main__':
+    # интерпретатор должен быть запущен в корневой папке проекта!
+    # формирование исходного набора строк для разметки
+    parser = argparse.ArgumentParser()
+    parser.add_argument("source", choices=['blvrd', 'discipl', 'econ', 'journ', 'koms', 'mathstat'],
+                        help='Название файла с текстом. Не указывать расширение!')
+    parser.add_argument("-p", "--pages", default=200, type=int, help="Кол-во страниц")
+    parser.add_argument("--rewrite", action="store_true", help="Флаг перезаписи файлов")
+    args = parser.parse_args()
+
+    line_cnt = args.pages * 20  # 20 строк на странице
+    SRC_TXT_FOLDER = './data/txt'
+    TXT_FILE_PATH = SRC_TXT_FOLDER + '/' + args.source + '.txt'
+    SRC_LBL_FOLDER = './data/labels'  # папка с нарезанными текстами (csv)
+    LABELS_FILE_PATH = SRC_LBL_FOLDER + '/' + args.source + '.csv'  # путь к обрабатываемому файлу с ярлыками
+
+    if os.path.isfile(LABELS_FILE_PATH) and not args.rewrite:
+        raise Exception("Осторожно, файл уже существует. Для перезаписи укажи флаг --rewrite")
+
+    with open(LABELS_FILE_PATH, "w", newline='') as f:
+        writer = csv.writer(f)
+        for pair in write_source(TXT_FILE_PATH, line_cnt=line_cnt):
+            writer.writerow([pair])

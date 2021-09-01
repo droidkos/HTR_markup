@@ -1,0 +1,6 @@
+/data/images/**.*
+/data/labels/**.*
+/data/txt/*
+/markup/**.*
+/sliced/**./*
+control.png
