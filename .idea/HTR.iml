@@ -10,6 +10,7 @@
       <excludeFolder url="file://$MODULE_DIR$/data/images/koms" />
       <excludeFolder url="file://$MODULE_DIR$/data/images/mathstat" />
       <excludeFolder url="file://$MODULE_DIR$/data/txt" />
+      <excludeFolder url="file://$MODULE_DIR$/data/images/orig_1" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.9 (HTR)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
