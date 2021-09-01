@@ -1,5 +1,11 @@
-/data/images/*/
-/data/labels/*/
-/data/txt/*/
-/sliced/*/
+/data/images/*
+!/data/images/.gitkeep
+/data/labels/*
+!data/labels/.gitkeep
+/data/txt/*
+!/data/txt/.gitkeep
+/sliced/*
+!/sliced/.gitkeep
 control.png
+words.txt
+./.idea
