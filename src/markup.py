@@ -123,7 +123,7 @@ if __name__ == '__main__':
     parser.add_argument("source", choices=['blvrd', 'discipl', 'econ', 'journ', 'koms', 'mathstat'],
                         help='Название файла с текстом. Не указывать расширение!')
     parser.add_argument("-p", "--pages", default=200, type=int, help="Кол-во страниц")
-    parser.add_argument("--rewrite", action="store_true", help="Флаг перезаписи файлов")
+    parser.add_argument("r", "--rewrite", action="store_true", help="Флаг перезаписи файлов")
     args = parser.parse_args()
 
     line_cnt = args.pages * 20  # 20 строк на странице
