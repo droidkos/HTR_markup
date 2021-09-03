@@ -140,25 +140,14 @@ def get_images(img_vh, bitnot, img_bin, w_min, h_min, h_max, debug=False):
         if countcol > countcol_max:
             countcol_max = countcol
 
-    # Получение центра каждой колонки
-    # center = []
-    # for i in range(len(rows)):
-    #     for j in range(len(rows[i])):
-    #         if rows[i][0]:
-    #             center.append(int(rows[i][j][0] + rows[i][j][2] / 2))
     arr = np.array(rows)
-    # print(arr.shape)
-    arr = arr.transpose(1, 0, 2)
+    try:
+        arr = arr.transpose(1, 0, 2)
+    except ValueError:
+        print("Не удалось считать контуры. Вероятно, границы ячеек плохо пропечатаны")
     center = (arr[:, 0, 0] + arr[:, 0, 2]) / 2
     center.sort()
 
-    # if not center:
-    #     raise Exception("Получился пустой список")
-    #
-    # center = np.array(center)
-    # center.sort()
-
-    # Regarding the distance to the columns center, the boxes are arranged in respective order
     finalboxes = []
     for i in range(len(rows)):
         lis = []
