@@ -147,6 +147,7 @@ def get_images(img_vh, bitnot, img_bin, w_min, h_min, h_max, debug=False):
     #         if rows[i][0]:
     #             center.append(int(rows[i][j][0] + rows[i][j][2] / 2))
     arr = np.array(rows)
+    # print(arr.shape)
     arr = arr.transpose(1, 0, 2)
     center = (arr[:, 0, 0] + arr[:, 0, 2]) / 2
     center.sort()

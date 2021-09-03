@@ -26,9 +26,6 @@ if __name__ == '__main__':
     LABELS_FILE_PATH = SRC_LBL_FOLDER + '/' + args.labels + '.csv'  # путь к обрабатываемому файлу с ярлыками
     IMAGE_FILE_PATH = SRC_IMG_FOLDER + '/' + args.labels + '/' + args.images  # путь к фотке, которую нарезаем
 
-    if not os.path.exists(DST_IMG_FOLDER):  # для каждой фотки - своя папка с нарезанными кусочками
-        os.makedirs(DST_IMG_FOLDER)  # папка называется именем файла исходной фотки
-
     img = cv2.imread(IMAGE_FILE_PATH, 0)  # 0 для игнора цветовой палитры (читает ЧБ)
     if img is None:
         raise Exception("Не удалось прочитать исходный файл")  # т.к. opencv не выдает ошибок чтения
@@ -38,6 +35,9 @@ if __name__ == '__main__':
     img_bin = ts.binarize(img)
     img_vh, bitnot = ts.get_lines(img, img_bin)
     cropped_images = ts.get_images(img_vh, bitnot, img_bin, w_min=10, h_min=25, h_max=5, debug=False)
+
+    if not os.path.exists(DST_IMG_FOLDER):  # для каждой фотки - своя папка с нарезанными кусочками
+        os.makedirs(DST_IMG_FOLDER)  # папка называется именем файла исходной фотки
 
     for num, cropped_img in enumerate(cropped_images):
         enhanced_img = markup.increase_contrast(cropped_img)
