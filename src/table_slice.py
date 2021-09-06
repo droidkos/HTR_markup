@@ -101,7 +101,7 @@ def get_images(img_vh, bitnot, img_bin, w_min, h_min, h_max, debug=False):
     for c in contours:
         x, y, w, h = cv2.boundingRect(c)
         # if w > (image_w // w_min) and (image_h // h_min) < h < (image_h // h_max):
-        if w > 100 and h < 500:
+        if w > 100 and 500 > h > 50:
             image = cv2.rectangle(img_bin, (x, y), (x + w, y + h), (255, 0, 0), 20)
             box.append([x, y, w, h])
 
