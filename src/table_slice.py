@@ -173,17 +173,17 @@ def get_images(img_vh, bitnot, img_bin, w_min, h_min, h_max, debug=False):
                     resizing = cv2.resize(border, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
                     dilation = cv2.dilate(resizing, kernel, iterations=1)
                     erosion = cv2.erode(dilation, kernel, iterations=1)
-
                     cropped_images.append(255 - erosion)
 
     return cropped_images
 
 
-def control(answers, cropped_images):
+def control(answers, cropped_images, nocheck=False):
     """
     Проверка корректности формирования разметки
     :param answers: тексты (словосочетания)
     :param cropped_images: соответствующие им изображения (массивы numpy)
+    :param nocheck: не запрашивать подтверждение записи в файл
     :return:
     """
     assert 2 * len(answers) == len(cropped_images)
@@ -198,6 +198,7 @@ def control(answers, cropped_images):
     stack = np.vstack(concat)
     showme = cv2.resize(stack, (0, 0), fx=0.2, fy=0.2)
     did_write = cv2.imwrite('control.png', showme)
-    assert did_write
-    print("Контрольный файл записан")
-    input("Проверь файл, нажми кнопку \n")
+    if not nocheck:
+        assert did_write
+        print("Контрольный файл записан")
+        input("Проверь файл, нажми кнопку \n")

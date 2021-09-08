@@ -15,6 +15,7 @@ if __name__ == '__main__':
     parser.add_argument("images", help='Файл с отсканированным изображением')
     parser.add_argument("page", type=int, help='Номер страницы')
     parser.add_argument("gender", type=int, choices=[0,1], help="Пол: 1 - М, 0 - Ж")
+    parser.add_argument("--nocheck", action="store_true", help="Не запрашивать подтверждение записи")
     args = parser.parse_args()
 
     # аргументами должны быть только имена файлов, без путей
@@ -51,7 +52,7 @@ if __name__ == '__main__':
     answers = markup.read_source(LABELS_FILE_PATH, args.page)
 
     # контроль
-    ts.control(answers, cropped_images)
+    ts.control(answers, cropped_images, args.nocheck)
 
     # формирование и запись csv разметки (формат "текст" - "путь к картинке")
     markup.write_markup(LABELS_FILE_PATH, DST_IMG_FOLDER, args.labels, args.page, args.gender)
